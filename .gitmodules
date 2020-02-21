@@ -1,0 +1,9 @@
+[submodule "nquakesv"]
+	path = nquakesv
+	url = git@github.com:niclaslindstedt/nquakesv-docker.git
+[submodule "qtv"]
+	path = qtv
+	url = git@github.com:niclaslindstedt/qtv-docker.git
+[submodule "qwfwd"]
+	path = qwfwd
+	url = git@github.com:niclaslindstedt/qwfwd-docker.git

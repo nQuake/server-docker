@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  nquake:
+    build:
+      context: ./nquakesv
+    environment:
+      - HOSTNAME=nquake server
+      - LISTEN_IP=0.0.0.0
+      - LISTEN_PORT=28501
+      - RCON_PASSWORD=changeme
+      - QTV_PORT=28000
+      - QTV_PASSWORD=changeme
+      - QWFWD_PASSWORD=changeme
+      - SERVER_ADMIN=empezar <empezar@qkn.se>
+    ports:
+      - '28501:28501/udp'
+    volumes:
+      - logs:/nquake/logs
+
+  qtv:
+    build:
+      context: ./qtv
+    ports:
+      - '28000:28000/udp'
+    environment:
+      - HOSTNAME=nquake qtv
+      - LISTEN_IP=0.0.0.0
+      - LISTEN_PORT=28000
+      - QTV_PASSWORD=changeme
+
+  qwfwd:
+    build:
+      context: ./qwfwd
+    ports:
+      - '30001:30000/udp'
+    environment:
+      - HOSTNAME=nquake qwfwd
+      - LISTEN_IP=0.0.0.0
+      - LISTEN_PORT=30000
+
+volumes:
+  logs:
