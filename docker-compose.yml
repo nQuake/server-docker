@@ -45,12 +45,6 @@ services:
       - HOSTNAME=nQuake QWFWD
     ports:
       - '30000:30000/udp' # this always listens internally at port 30000
-    healthcheck:
-      test: ["CMD", "/health_check.sh"]
-      interval: 15s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
 
 volumes:
   logs:
