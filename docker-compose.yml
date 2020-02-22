@@ -5,7 +5,6 @@ services:
     image: niclaslindstedt/nquakesv
     environment:
       - HOSTNAME=nQuake KTX Server
-      - ADDRESS=localhost # this is your server's external domain/ip
       - PORT=27500 # this is the external port number for this server -- use it in the ports: section too
       - RCON_PASSWORD=secret
       - QTV_PASSWORD=
