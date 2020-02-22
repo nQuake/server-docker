@@ -1,9 +1,8 @@
 version: '3.7'
 
 services:
-  nquake:
-    build:
-      context: ./nquakesv
+  nquakesv:
+    image: niclaslindstedt/nquakesv
     environment:
       - HOSTNAME=nquake server
       - LISTEN_IP=0.0.0.0
@@ -19,8 +18,7 @@ services:
       - logs:/nquake/logs
 
   qtv:
-    build:
-      context: ./qtv
+    image: niclaslindstedt/qtv
     ports:
       - '28000:28000/udp'
     environment:
@@ -30,8 +28,7 @@ services:
       - QTV_PASSWORD=changeme
 
   qwfwd:
-    build:
-      context: ./qwfwd
+    image: niclaslindstedt/qwfwd
     ports:
       - '30001:30000/udp'
     environment:
