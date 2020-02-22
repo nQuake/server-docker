@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  nquakesv:
+  mvdsv:
     image: niclaslindstedt/nquakesv
     environment:
       - HOSTNAME=nquake server
@@ -12,25 +12,34 @@ services:
       - QTV_PASSWORD=changeme
       - QWFWD_PASSWORD=changeme
       - SERVER_ADMIN=empezar <empezar@qkn.se>
+      - REPORT_URL=https://badplace.eu
+      - REPORT_KEY=askmeag
     ports:
       - '28501:28501/udp'
     volumes:
       - logs:/nquake/logs
+      - media:/nquake/media
+      - demos:/nquake/demos
 
   qtv:
     image: niclaslindstedt/qtv
     ports:
       - '28000:28000/udp'
+      - '8989:80'
     environment:
       - HOSTNAME=nquake qtv
       - LISTEN_IP=0.0.0.0
       - LISTEN_PORT=28000
       - QTV_PASSWORD=changeme
+      - QW_SERVER=mvdsv:28501
+    volumes:
+      - demos:/qtv/demos
+      - media:/qtv/id1
 
   qwfwd:
     image: niclaslindstedt/qwfwd
     ports:
-      - '30001:30000/udp'
+      - '30000:30000/udp'
     environment:
       - HOSTNAME=nquake qwfwd
       - LISTEN_IP=0.0.0.0
@@ -38,3 +47,5 @@ services:
 
 volumes:
   logs:
+  demos:
+  media:
