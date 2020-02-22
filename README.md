@@ -1,6 +1,8 @@
 # nQuake server
 
-Start nQuake by running:
+To run nQuake server, you need to download and install Docker.
+
+When you have Docker, just run the following from the nquakesv folder:
 
 ```
 docker-compose up -d
