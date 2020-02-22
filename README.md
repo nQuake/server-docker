@@ -1,6 +1,4 @@
-# nQuake server compose
-
-This is the docker-compose equivalent of the nQuake server package
+# nQuake server
 
 Start nQuake by running:
 
