@@ -4,16 +4,16 @@ services:
   mvdsv:
     image: niclaslindstedt/nquakesv
     environment:
-      - HOSTNAME=nquake server
-      - LISTEN_PORT=28501
-      - RCON_PASSWORD=changeme
-      - QTV_STREAMPORT=28000
-      - QTV_PASSWORD=changeme
-      - SERVER_ADMIN=empezar <empezar@qkn.se>
+      - HOSTNAME=nQuake KTX Server
+      - ADDRESS=localhost # this is your server's external domain/ip
+      - PORT=27500 # this is the external port number for this server -- use it in the ports: section too
+      - RCON_PASSWORD=secret
+      - QTV_PASSWORD=
+      - SERVER_ADMIN=anon <anonymous@example.com>
       - REPORT_URL=https://badplace.eu
       - REPORT_KEY=askmeag
     ports:
-      - '28501:28501/udp'
+      - '27500:27500/udp' # this should match your PORT variable above, and should be the same on left & right
     volumes:
       - logs:/nquake/logs
       - media:/nquake/media
@@ -21,26 +21,37 @@ services:
 
   qtv:
     image: niclaslindstedt/qtv
+    tty: true
     environment:
-      - HOSTNAME=nquake qtv
-      - LISTEN_PORT=28000
-      - QTV_PASSWORD=changeme
-      - TARGET_SERVERS=mvdsv:28501 # comma-separated
+      - HOSTNAME=nQuake QTV
+      - QTV_PASSWORD=
+      - ADMIN_PASSWORD=secret
+      - TARGET_SERVERS=mvdsv:27500 # comma-separated
     ports:
-      - '28000:28000'
-      - '8989:80'
+      - '28000:28000' # this always listens internally at port 28000
     volumes:
       - demos:/qtv/demos
       - media:/qtv/id1
+    healthcheck:
+      test: ["CMD", "/health_check.sh"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   qwfwd:
     image: niclaslindstedt/qwfwd
+    tty: true
     environment:
-      - HOSTNAME=nquake qwfwd
-      - LISTEN_IP=0.0.0.0
-      - LISTEN_PORT=30000
+      - HOSTNAME=nQuake QWFWD
     ports:
-      - '30000:30000/udp'
+      - '30000:30000/udp' # this always listens internally at port 30000
+    healthcheck:
+      test: ["CMD", "/health_check.sh"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
 volumes:
   logs:
