@@ -24,6 +24,7 @@ services:
     tty: true
     environment:
       - HOSTNAME=nQuake QTV
+      - SERVER_IP= # this is your server's external ip, leave it empty to look up your external ip
       - QTV_PASSWORD=
       - ADMIN_PASSWORD=secret
       - TARGET_SERVERS=mvdsv:27500 # comma-separated
