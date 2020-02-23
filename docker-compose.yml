@@ -7,7 +7,7 @@ services:
       - HOSTNAME=nQuake KTX Server
       - SERVER_IP= # this is your server's external ip, leave it empty to look up your external ip
       - PORT=27500 # this is the external port number for this server -- use it in the ports: section too
-      - RCON_PASSWORD=secret
+      - RCON_PASSWORD=changeme
       - QTV_PASSWORD=
       - SERVER_ADMIN=anon <anonymous@example.com>
       - REPORT_URL=https://badplace.eu
@@ -26,7 +26,7 @@ services:
       - HOSTNAME=nQuake QTV
       - SERVER_IP= # this is your server's external ip, leave it empty to look up your external ip
       - QTV_PASSWORD=
-      - ADMIN_PASSWORD=secret
+      - ADMIN_PASSWORD=changeme
       - TARGET_SERVERS=mvdsv:27500 # comma-separated
     ports:
       - '28000:28000' # this always listens internally at port 28000
