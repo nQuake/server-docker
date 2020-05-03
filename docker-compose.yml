@@ -12,12 +12,16 @@ services:
       - SERVER_ADMIN=anon <anonymous@example.com>
       - REPORT_URL=https://badplace.eu
       - REPORT_KEY=askmeag
+      - SERVER_MEMORY_KBYTES=65536 # memory allocation for server process
     ports:
       - '27500:27500/udp' # this should match your PORT variable above, and should be the same on left & right
     volumes:
+      - "/etc/timezone:/etc/timezone:ro" # This will make sure logs inside the container are in the timezone of the server
+      - "/etc/localtime:/etc/localtime:ro" # This will make sure logs inside the container are in the timezone of the server
       - logs:/nquake/logs
       - media:/nquake/media
       - demos:/nquake/demos
+    restart: always
     healthcheck:
       test: ["CMD", "/healthcheck.sh"]
       interval: 1m
