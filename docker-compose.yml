@@ -3,18 +3,19 @@ version: '3.7'
 services:
   mvdsv:
     image: niclaslindstedt/nquakesv
+    restart: always
     environment:
-      - HOSTNAME=nQuake KTX Server
-      - SERVER_IP= # this is your server's external ip, leave it empty to look up your external ip
-      - PORT=27500 # this is the external port number for this server -- use it in the ports: section too
-      - RCON_PASSWORD=changeme
-      - QTV_PASSWORD=
-      - SERVER_ADMIN=anon <anonymous@example.com>
-      - REPORT_URL=https://badplace.eu
-      - REPORT_KEY=askmeag
-      - SERVER_MEMORY_KBYTES=65536 # memory allocation for server process
+      - HOSTNAME=${KTX_HOSTNAME}
+      - SERVER_IP=${KTX_SERVER_IP} # this is your server's external ip, leave it empty to look up your external ip
+      - PORT=${KTX_SERVER_PORT} # this is the external port number for this server
+      - RCON_PASSWORD=${KTX_RCON_PASSWORD}
+      - QTV_PASSWORD=${KTX_QTV_PASSWORD}
+      - SERVER_ADMIN=${KTX_SERVER_ADMIN}
+      - REPORT_URL=${QTV_REPORT_URL}
+      - REPORT_KEY=${QTV_REPORT_KEY}
+      - SERVER_MEMORY_KBYTES=${MVDSV_SERVER_MEMORY_BYTES} # memory allocation for server process
     ports:
-      - '27500:27500/udp' # this should match your PORT variable above, and should be the same on left & right
+      - '${KTX_SERVER_PORT}:${KTX_SERVER_PORT}/udp'
     volumes:
       - "/etc/timezone:/etc/timezone:ro" # This will make sure logs inside the container are in the timezone of the server
       - "/etc/localtime:/etc/localtime:ro" # This will make sure logs inside the container are in the timezone of the server
@@ -31,20 +32,21 @@ services:
 
   qtv:
     image: niclaslindstedt/qtv
+    restart: always
     tty: true
     environment:
-      - HOSTNAME=nQuake QTV
-      - SERVER_IP= # this is your server's external ip, leave it empty to look up your external ip
-      - QTV_PASSWORD=
-      - ADMIN_PASSWORD=changeme
-      - TARGET_SERVERS=mvdsv:27500 # comma-separated
+      - HOSTNAME=${QTV_HOSTNAME}
+      - SERVER_IP=${QTV_SERVER_IP} # this is your server's external ip, leave it empty to look up your external ip
+      - QTV_PASSWORD=${QTV_PASSWORD}
+      - ADMIN_PASSWORD=${QTV_ADMIN_PASSWORD}
+      - TARGET_SERVERS=mvdsv:${KTX_SERVER_PORT}
     ports:
-      - '28000:28000' # this always listens internally at port 28000
+      - '${QTV_SERVER_PORT}:28000'
     volumes:
       - demos:/qtv/demos
       - media:/qtv/id1
     healthcheck:
-      test: ["CMD", "/health_check.sh"]
+      test: ["CMD", "/healthcheck.sh"]
       interval: 1m
       timeout: 10s
       retries: 3
@@ -52,11 +54,12 @@ services:
 
   qwfwd:
     image: niclaslindstedt/qwfwd
+    restart: always
     tty: true
     environment:
-      - HOSTNAME=nQuake QWFWD
+      - HOSTNAME=${QWFWD_HOSTNAME}
     ports:
-      - '30000:30000/udp' # this always listens internally at port 30000
+      - '${QWFWD_SERVER_PORT}:30000/udp'
 
 volumes:
   logs:
