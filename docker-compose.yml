@@ -21,7 +21,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro" # This will make sure logs inside the container are in the timezone of the server
       - logs:/nquake/logs
       - media:/nquake/media
-      - demos:/nquake/demos
+      - demos:/nquake/ktx/demos
     restart: always
     healthcheck:
       test: ["CMD", "/healthcheck.sh"]
